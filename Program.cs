@@ -34,14 +34,15 @@ Event CreateEvent()
             e = new Event(title, date, capacity);
             Console.Write("Do you wonna add more events (y/n): ");
             prompt = Console.ReadLine() ?? "";
-            if(prompt == "n")
-            {
-                Console.WriteLine(e.Title);
-                printInfo(e);
-                reserveAndCancel(e);
-            }
+                if(prompt == "n")
+                {
+                Console.WriteLine(e.ToString());
+                    
+                   
+                }
+            
         }
-       
+        reserveAndCancel(e);
 
     }
     catch (ArgumentException error)

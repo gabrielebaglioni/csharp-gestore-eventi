@@ -44,6 +44,7 @@ public class ProgramEvent
             Console.WriteLine(e.ToString());
         }
     }
+
     public void ClearProgram()
     {
         events.Clear();
