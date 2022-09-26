@@ -58,11 +58,39 @@ public class Evento
         CapienzaMax = capienza;
         PostiPrenotati = 0;
     }
+    //--------------
+    //METODI
+    //--------------
+    public override string ToString()
+    {
+        return $"{Titolo} - {Data:dd/MM/yyyy}";
+    }
+
+    public void PrenotaPosti(int posti)
+    {
+        if (PostiPrenotati + posti > CapienzaMax || Data < DateTime.Now)
+        {
+            throw new PrenotazionePostiException("L'evento e' terminato o non ci sono piu posti disponibili per la prenotazione");
+        }
+        PostiPrenotati += posti;
+    }
+    public void DisdiciPosti(int posti)
+    {
+        if (PostiPrenotati - posti < 0 || Data < DateTime.Now)
+        {
+            throw new DisdiciPostiException("L'evento e' terminato o non ci sono posti prenotati da disdire");
+        }
+        PostiPrenotati -= posti;
+    }
+
 }
 
 
 
 
+//--------------
+//EXCEPTION
+//--------------
 
 public class checkTitle : Exception
 {
@@ -77,6 +105,15 @@ public class checkCapienza : Exception
     public checkCapienza(string message) : base(message) { }
 }
 
+
+public class PrenotazionePostiException : Exception
+{
+    public PrenotazionePostiException(string message) : base(message) { }
+}
+public class DisdiciPostiException : Exception
+{
+    public DisdiciPostiException(string message) : base(message) { }
+}
 
 
 
