@@ -1,135 +1,94 @@
-using System.Data;
-
-public class Evento
+public class Event
 {
-    public string Titolo
+    private DateOnly date;
+
+    public string Title { get; set; }
+    // Set the date whit controll
+    public DateOnly Date
     {
-        get
-        {
-            return Titolo;
-        }
+        get => date;
         set
         {
-            if (string.IsNullOrEmpty(Titolo))
+            if (value < DateOnly.FromDateTime(DateTime.Now))
             {
-                throw new checkTitle("Iserisci un titolo");
+                throw new ArgumentException("Date must be in the future");
             }
-            Titolo = value;
+
+            date = value;
         }
     }
-    public DateTime Data
+    // init variable with private set 
+    public int Capacity { get; private set; }
+    public int Reserved { get; private set; }
+    //constructor
+    public Event(string title, DateOnly date, int capacity)
     {
-        get
+        if (title == "")
         {
-            return Data;
+            throw new ArgumentException("Title cannot be empty");
         }
-        set
+        Title = title;
+        if (date < DateOnly.FromDateTime(DateTime.Now))
         {
-            if (Data < DateTime.Now)
-            {
-                throw new CheckData("La data deve essere successiva al data odierna");
-            }
-            Data = value;
+            throw new ArgumentException("Date must be in the future");
         }
+        this.date = date;
+        if (capacity < 1)
+        {
+            throw new ArgumentException("Capacity must be greater than 0");
+        }
+        Capacity = capacity;
+        Reserved = 0;
+    }
+    //function
+
+    public void Reserve(int seats)
+    {
+        if (seats < 1)
+        {
+            throw new ArgumentException("Seats must be greater than 0");
+        }
+
+        if (seats > Capacity - Reserved)
+        {
+            throw new ArgumentException("Not enough seats available");
+        }
+
+        if (DateOnly.FromDateTime(DateTime.Now) > Date)
+        {
+            throw new ArgumentException("Event already happened");
+        }
+
+        Reserved += seats;
+        Capacity -= seats;
     }
 
-    public int PostiPrenotati { get; private set; }
-    public int CapienzaMax
+    public void Cancel(int seats)
     {
-        get
+        if (seats < 1)
         {
-            return CapienzaMax;
+            throw new ArgumentException("Seats must be more then 0");
         }
-        private set
+
+        if (seats > Reserved)
         {
-            if (CapienzaMax < 1)
-            {
-                throw new checkCapienza("La Capienza massima dell' evento deve essere maggiore di 0");
-            }
-            CapienzaMax = value;
+            throw new ArgumentException("There isn't enough seats");
         }
+
+        if (DateOnly.FromDateTime(DateTime.Now) > Date)
+        {
+            throw new ArgumentException("Event already happened");
+        }
+
+        Reserved -= seats;
+        Capacity += seats;
     }
 
-    public Evento(string title, DateTime data, int capienza)
-    {
-
-        Titolo = title;
-        Data = data;
-        CapienzaMax = capienza;
-        PostiPrenotati = 0;
-    }
-    //--------------
-    //METODI
-    //--------------
     public override string ToString()
     {
-        return $"{Titolo} - {Data:dd/MM/yyyy}";
+        return $"{Title} - {Date.ToString("dd/MM/yyyy")}";
     }
 
-    public void PrenotaPosti(int posti)
-    {
-        if (PostiPrenotati + posti > CapienzaMax || Data < DateTime.Now)
-        {
-            throw new PrenotazionePostiException("L'evento e' terminato o non ci sono piu posti disponibili per la prenotazione");
-        }
-        PostiPrenotati += posti;
-    }
-    public void DisdiciPosti(int posti)
-    {
-        if (PostiPrenotati - posti < 0 || Data < DateTime.Now)
-        {
-            throw new DisdiciPostiException("L'evento e' terminato o non ci sono posti prenotati da disdire");
-        }
-        PostiPrenotati -= posti;
-    }
+
 
 }
-
-
-
-
-//--------------
-//EXCEPTION
-//--------------
-
-public class checkTitle : Exception
-{
-    public checkTitle(string message) : base(message) { }
-}
-public class CheckData : Exception
-{
-    public CheckData(string message) : base(message) { }
-}
-public class checkCapienza : Exception
-{
-    public checkCapienza(string message) : base(message) { }
-}
-
-
-public class PrenotazionePostiException : Exception
-{
-    public PrenotazionePostiException(string message) : base(message) { }
-}
-public class DisdiciPostiException : Exception
-{
-    public DisdiciPostiException(string message) : base(message) { }
-}
-
-
-
-//public void checkTitolo()
-//{
-//    if (string.IsNullOrEmpty(Titolo))
-//    {
-//        Console.WriteLine("write a title");
-
-//    }
-//}
-//public void checkCapienzaMax()
-//{
-//    if (CapienzaMax < 0)
-//    {
-//        CapienzaMax *= -1;
-//    }
-
-//}
