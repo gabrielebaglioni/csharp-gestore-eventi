@@ -5,8 +5,24 @@ Event newEvent = new Event("Fiera", new DateOnly(2023, 05, 12), 1000);
 Console.WriteLine(newEvent.ToString());
 
 
-//program
-reserveAndCancel(newEvent);
+//program mileston 2
+//reserveAndCancel(newEvent);
+
+
+
+ProgramEvent Events = new ProgramEvent("Concerti");
+
+Events.addEvent(newEvent);
+
+
+
+
+
+
+
+
+
+
 //uso funzioni
 void ReserveSeats(Event e)
 {
