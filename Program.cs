@@ -8,7 +8,7 @@ Event newEvent = new Event("Fiera", new DateOnly(2023, 05, 12), 1000);
 
 
 //program mileston 2
-ProgramEvent EventsGroup = new ProgramEvent("Concerti");
+ProgramEvent EventsGroup = new ProgramEvent("Show");
 
 EventsGroup.addEvent(newEvent);
 
@@ -24,11 +24,11 @@ Event CreateEvent()
         
         while(prompt == "y")
         {
-            Console.Write("Inserisci il nome dell'evento: ");
+            Console.Write("enter the event title: ");
             string title = Console.ReadLine() ?? "";
-            Console.Write("Inserisci la data dell'evento(gg/mm/aaaa): ");
+            Console.Write("enter the event date(gg/mm/aaaa): ");
             DateOnly date = DateString(Console.ReadLine());
-            Console.Write("Inserisci la capienza dell'evento: ");
+            Console.Write("Enter the capacity of the event: ");
             int capacity = Convert.ToInt32(Console.ReadLine() ?? "0");
             Console.WriteLine("Congrats you add a new avents");
             e = new Event(title, date, capacity);
