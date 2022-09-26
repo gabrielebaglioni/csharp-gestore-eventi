@@ -2,24 +2,67 @@
 Event newEvent = new Event("Fiera", new DateOnly(2023, 05, 12), 1000);
 
 
-Console.WriteLine(newEvent.ToString());
+//Console.WriteLine(newEvent.ToString());
 
-
-//program mileston 2
 //reserveAndCancel(newEvent);
 
 
+//program mileston 2
+ProgramEvent EventsGroup = new ProgramEvent("Concerti");
 
-ProgramEvent Events = new ProgramEvent("Concerti");
+EventsGroup.addEvent(newEvent);
 
-Events.addEvent(newEvent);
+Event e = CreateEvent();
+
+Event CreateEvent()
+{
+    Event? e = null;
+    Console.WriteLine("do you wonna ad a new events? (y/n): ");
+    string prompt = Console.ReadLine() ?? "";
+    try
+    {
+        
+        while(prompt == "y")
+        {
+            Console.Write("Inserisci il nome dell'evento: ");
+            string title = Console.ReadLine() ?? "";
+            Console.Write("Inserisci la data dell'evento(gg/mm/aaaa): ");
+            DateOnly date = DateString(Console.ReadLine());
+            Console.Write("Inserisci la capienza dell'evento: ");
+            int capacity = Convert.ToInt32(Console.ReadLine() ?? "0");
+            Console.WriteLine("Congrats you add a new avents");
+            e = new Event(title, date, capacity);
+            Console.Write("Do you wonna add more events (y/n): ");
+            prompt = Console.ReadLine() ?? "";
+            if(prompt == "n")
+            {
+                Console.WriteLine(e.Title);
+                printInfo(e);
+                reserveAndCancel(e);
+            }
+        }
+       
+
+    }
+    catch (ArgumentException error)
+    {
+        Console.WriteLine(error.Message); 
+    }
+
+    return e;
+}
 
 
+DateOnly DateString(string date)
+{
+    string[] dateArray = date.Split('/');
 
 
-
-
-
+    int day = Convert.ToInt32(dateArray[0]);
+    int month = Convert.ToInt32(dateArray[1]);
+    int year = Convert.ToInt32(dateArray[2]);
+    return new DateOnly(year, month, day);
+}
 
 
 
