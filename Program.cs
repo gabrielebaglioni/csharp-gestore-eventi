@@ -56,12 +56,12 @@ Event CreateEvent()
 
 DateOnly DateString(string date)
 {
-    string[] dateArray = date.Split('/');
+    string[] Arr = date.Split('/');
 
 
-    int day = Convert.ToInt32(dateArray[0]);
-    int month = Convert.ToInt32(dateArray[1]);
-    int year = Convert.ToInt32(dateArray[2]);
+    int day = Convert.ToInt32(Arr[0]);
+    int month = Convert.ToInt32(Arr[1]);
+    int year = Convert.ToInt32(Arr[2]);
     return new DateOnly(year, month, day);
 }
 
